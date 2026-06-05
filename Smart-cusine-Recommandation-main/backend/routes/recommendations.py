@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from database import db
+from ..database import db
 
 rec_bp = Blueprint('recommendations', __name__)
 
