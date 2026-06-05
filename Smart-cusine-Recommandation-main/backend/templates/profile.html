@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | Smart Cuisine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .profile-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 40px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-section {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #f97316, #fb923c);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 35px;
+            margin: 0 auto;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.3);
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #fff, #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .email {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        /* View Mode */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-label {
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            color: #f8fafc;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        /* Edit Mode */
+        .edit-form {
+            display: none;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #f97316;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 14px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.3s;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f97316, #fb923c);
+            color: white;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-outline {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            border-color: #6366f1;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        /* Validation Style */
+        .error-text {
+            color: #ef4444;
+            font-size: 11px;
+            margin-top: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="profile-container">
+        <div class="profile-card">
+            <a href="/home" class="back-link"><i class="fa-solid fa-arrow-left"></i> Home</a>
+
+            <div class="avatar-section">
+                <div class="avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+
+            <div id="viewMode">
+                {% if user %}
+                <h2>{{ user.first_name }}</h2>
+                <p class="email">{{ user.email }}</p>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Name</span>
+                        <span class="info-value">{{ user.first_name }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Phone</span>
+                        <span class="info-value">{{ user.phone if user.phone else 'Not Set' }}</span>
+                    </div>
+                </div>
+                {% else %}
+                <h2>New User</h2>
+                <p class="email">Please complete your profile</p>
+                {% endif %}
+
+                <div class="actions">
+                    <button onclick="toggleEdit()" class="btn btn-primary">Edit Profile Details</button>
+                    <a href="/home" class="btn btn-outline">Go to App</a>
+                </div>
+            </div>
+
+            <!-- EDIT FORM -->
+            <div id="editMode" class="edit-form">
+                <h2>Update Profile</h2>
+                <p class="email" style="margin-bottom: 20px;">Provide your details below</p>
+                
+                <form action="/save_user" method="POST" onsubmit="return validateProfile()">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="first_name" id="fName" value="{{ user.first_name if user else '' }}" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone Number (India)</label>
+                        <input type="text" name="phone" id="phoneInput" value="{{ user.phone if user else '' }}" placeholder="10-digit number" required>
+                        <p id="phoneError" class="error-text">Please enter a valid 10-digit Indian phone number (starting with 6-9)</p>
+                    </div>
+
+                    <input type="hidden" name="from_profile" value="true">
+
+                    <div class="actions">
+                        <button type="submit" class="btn btn-primary">Save & Continue</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleEdit() {
+            const view = document.getElementById('viewMode');
+            const edit = document.getElementById('editMode');
+            if (view.style.display === 'none') {
+                view.style.display = 'block';
+                edit.style.display = 'none';
+            } else {
+                view.style.display = 'none';
+                edit.style.display = 'block';
+            }
+        }
+
+        function validateProfile() {
+            const phone = document.getElementById('phoneInput').value.trim();
+            const error = document.getElementById('phoneError');
+            
+            // Indian phone number regex: 10 digits starting with 6-9
+            const phoneRegex = /^[6-9]\d{9}$/;
+            
+            if (!phoneRegex.test(phone)) {
+                error.style.display = 'block';
+                return false;
+            } else {
+                error.style.display = 'none';
+            }
+            return true;
+        }
+
+        // If user is new (no name/phone), start in edit mode
+        {% if not user or not user.first_name or not user.phone %}
+        window.onload = () => {
+            document.getElementById('viewMode').style.display = 'none';
+            document.getElementById('editMode').style.display = 'block';
+        };
+        {% endif %}
+    </script>
+</body>
+</html>

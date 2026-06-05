@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Insights | Smart Cuisine AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif; -webkit-font-smoothing: antialiased;}
+    body{
+        background: linear-gradient(rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color:white;
+        min-height:100vh;
+    }
+    
+    .nav{margin:20px;padding:18px 35px;display:flex;justify-content:space-between;align-items:center;border-radius:24px;background:rgba(255,255,255,0.03);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);}
+    .logo{font-size:22px;font-weight:800;background: linear-gradient(90deg, #f97316, #fb923c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration:none;}
+    
+    .container{max-width:1000px;margin:60px auto;padding:0 20px;}
+    
+    h1{font-size:42px;font-weight:900;margin-bottom:20px;text-align:center; letter-spacing:-1px;}
+    .subtitle{text-align:center; color:#94a3b8; font-size:18px; margin-bottom:60px;}
+    
+    .insight-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:30px;}
+    
+    .insight-card{
+        background:rgba(255,255,255,0.03);
+        border-radius:32px;
+        padding:40px;
+        border:1px solid rgba(255,255,255,0.08);
+        transition: 0.4s;
+    }
+    .insight-card:hover{transform:translateY(-10px); background:rgba(255,255,255,0.05); border-color:rgba(249, 115, 22, 0.4);}
+    
+    .icon{font-size:40px; margin-bottom:20px;}
+    h3{font-size:22px; font-weight:800; margin-bottom:15px; color:#fff;}
+    p{font-size:15px; line-height:1.7; color:#cbd5e1;}
+    
+    .stats-row{display:flex; justify-content:center; gap:50px; margin-top:80px; padding:40px; background:rgba(249, 115, 22, 0.05); border-radius:40px; border:1px solid rgba(249, 115, 22, 0.1);}
+    .stat-item{text-align:center;}
+    .stat-val{font-size:36px; font-weight:900; color:#f97316;}
+    .stat-label{font-size:12px; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin-top:5px;}
+
+    .btn-cta{display:inline-block; margin-top:40px; padding:16px 32px; border-radius:16px; background:#f97316; color:white; text-decoration:none; font-weight:800; transition:0.3s; border:none; cursor:pointer;}
+    .btn-cta:hover{transform:translateY(-2px); box-shadow: 0 10px 20px rgba(249, 115, 22, 0.3);}
+</style>
+</head>
+<body>
+
+<div class="nav">
+    <a href="/home" class="logo">🍽 Smart Cuisine</a>
+    <div class="nav-right">
+        <a href="/home" style="color:white; text-decoration:none; font-weight:600;">⬅ Back to App</a>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Smart AI Insights</h1>
+    <p class="subtitle">How our intelligence engine personalizes your dining experience.</p>
+    
+    <!-- SMART RECOMMENDATIONS -->
+        <div class="section" style="padding-bottom: 20px;">
+            <div class="icon">🛡️</div>
+            <h3>Authenticity Guard</h3>
+            <p>Every review is processed by our Natural Language Processing (NLP) engine. It filters out spam, bots, and biased reviews to give you a "Perfect Rating" you can trust.</p>
+        </div>
+    
+    <div class="insight-grid">
+        <div class="insight-card">
+            <div class="icon">🧠</div>
+            <h3>Most Preferable Intelligence</h3>
+            <p>Our machine learning models analyze your past preferences and saved cuisines to build a "Taste DNA." We then scan thousands of nearby dishes to find your Most Preferable matches.</p>
+        </div>
+        
+        <div class="insight-card">
+            <div class="icon">📍</div>
+            <h3>Geo-Contextual Search</h3>
+            <p>Our location engine doesn't just look for what's near; it looks for what's best in your specific neighborhood, using real-world traffic and distance data.</p>
+        </div>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-item">
+            <div class="stat-val">98%</div>
+            <div class="stat-label">Accuracy Rate</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-val">25ms</div>
+            <div class="stat-label">Analysis Speed</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-val">5k+</div>
+            <div class="stat-label">Verified Reviews</div>
+        </div>
+    </div>
+
+    <div style="text-align:center; margin-top:60px;">
+        <a href="/search" class="btn-cta">Start Smart Discovery</a>
+    </div>
+</div>
+
+</body>
+</html>

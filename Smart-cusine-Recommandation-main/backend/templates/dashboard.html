@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Cuisine Recommendation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-indigo: #6366f1;
+            --secondary-violet: #8b5cf6;
+            --primary-orange: #f97316;
+            --secondary-lite: #fb923c;
+            --primary-red: #ef4444;
+            --dark-bg: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(249, 115, 22, 0.2);
+            --text-secondary: #cbd5e1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        body {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-orange), var(--secondary-lite));
+            padding: 25px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px;
+            text-align: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        h2.title {
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 35px;
+            font-size: 24px;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 18px 15px 18px 55px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 16px;
+            color: white;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-orange);
+            background: rgba(255,255,255,0.06);
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.3);
+        }
+
+        /* City Selection */
+        .city-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .city-btn {
+            padding: 12px 28px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, var(--primary-orange), var(--secondary-lite));
+            color: white;
+            min-width: 130px;
+        }
+
+        .city-btn.inactive {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+        }
+
+        .city-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.4);
+        }
+
+        /* Chips Grid */
+        .chips-section {
+            margin-bottom: 40px;
+            background: rgba(0,0,0,0.1);
+            padding: 20px;
+            border-radius: 16px;
+        }
+
+        .chips-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .chip {
+            padding: 10px 22px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            background-color: rgba(255,255,255,0.03);
+            color: #cbd5e1;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .chip:hover {
+            background-color: rgba(255,255,255,0.08);
+            border-color: var(--primary-indigo);
+            color: white;
+        }
+
+        .chip.active {
+            background: var(--primary-orange);
+            color: white;
+            border-color: var(--primary-orange);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+        }
+
+        /* Filter Labels */
+        .filter-label {
+            font-weight: 800;
+            color: #cbd5e1;
+            margin-top: 35px;
+            font-size: 16px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        /* Form Hidden Inputs */
+        #searchForm {
+            display: none;
+        }
+
+        .discover-btn {
+            margin-top: 50px;
+            padding: 16px 45px;
+            background: linear-gradient(135deg, var(--secondary-lite), var(--primary-orange));
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.4);
+            transition: all 0.4s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .discover-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .city-selector {
+                flex-wrap: wrap;
+            }
+            .city-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🍽 Most Preferable Discovery</h1>
+    </header>
+
+    <div class="container">
+        <h2 class="title">Select Your Preferences</h2>
+
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" class="search-input" id="nameSearch" placeholder="Search restaurants by name, dish, or cuisine">
+        </div>
+
+        <div style="margin-bottom: 30px;">
+            <button class="city-btn" onclick="detectLocation()" style="background-color: #2a9d8f;">
+                <i class="fa-solid fa-location-crosshairs"></i> Use Current Location
+            </button>
+            <p id="locationStatus" style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;"></p>
+        </div>
+
+        <div class="city-selector">
+            <button class="city-btn" onclick="selectCity('Hyderabad')" id="btn-Hyderabad">Hyderabad</button>
+            <button class="city-btn inactive" onclick="selectCity('Mumbai')" id="btn-Mumbai">Mumbai</button>
+            <button class="city-btn inactive" onclick="selectCity('Chennai')" id="btn-Chennai">Chennai</button>
+        </div>
+
+        <div class="chips-section">
+            <div class="chips-grid" id="sublocationGrid">
+                <!-- Chips will be loaded here via JS -->
+            </div>
+            <p style="margin-top: 15px; font-weight: 500; color: #f97316;">
+                Selected: <span id="selectedLocationLabel" style="color: white; font-weight: 700;">Hyderabad</span>
+            </p>
+        </div>
+
+        <span class="filter-label">Filter by Price:</span>
+        <div class="chips-grid" id="priceGrid">
+            <div class="chip active" onclick="selectPrice('All Prices', this)">All Prices</div>
+            <div class="chip" onclick="selectPrice('Low', this)">Low</div>
+            <div class="chip" onclick="selectPrice('Medium', this)">Medium</div>
+            <div class="chip" onclick="selectPrice('High', this)">High</div>
+        </div>
+
+        <span class="filter-label">Filter by Cuisine:</span>
+        <div class="chips-grid" id="cuisineGrid">
+            <div class="chip active" onclick="selectCuisine('All Cuisines', this)">All Cuisines</div>
+            <div class="chip" onclick="selectCuisine('South Indian', this)">South Indian</div>
+            <div class="chip" onclick="selectCuisine('North Indian', this)">North Indian</div>
+            <div class="chip" onclick="selectCuisine('Chinese', this)">Chinese</div>
+            <div class="chip" onclick="selectCuisine('Italian', this)">Italian</div>
+            <div class="chip" onclick="selectCuisine('Biryani', this)">Biryani</div>
+            <div class="chip" onclick="selectCuisine('Mandi', this)">Mandi</div>
+            <div class="chip" onclick="selectCuisine('Haleem', this)">Haleem</div>
+            <div class="chip" onclick="selectCuisine('Tiffins', this)">Tiffins</div>
+            <div class="chip" onclick="selectCuisine('Street Food', this)">Street Food</div>
+        </div>
+
+        <button class="discover-btn" onclick="submitSearch()">Discover Restaurants</button>
+
+        <form id="searchForm" action="/recommend" method="POST">
+            <input type="hidden" name="location" id="finalLocation">
+            <input type="hidden" name="cuisine" id="finalCuisine">
+            <input type="hidden" name="budget" id="finalBudget">
+            <input type="hidden" name="keyword" id="finalKeyword">
+            <input type="hidden" name="lat" id="finalLat">
+            <input type="hidden" name="lon" id="finalLon">
+            <input type="hidden" name="food_type" value="Any">
+            <input type="hidden" name="min_rating" value="0">
+        </form>
+    </div>
+
+    <script>
+        const sublocations = {
+            "Hyderabad": [
+                "Abids", "Ameerpet", "Attapur", "Banjara Hills", "Begumpet", 
+                "Bowenpally", "Charminar", "Dilsukhnagar", "Gachibowli", 
+                "Hitech City", "Jubilee Hills", "Kondapur", "Kukalpally", 
+                "LB Nagar", "Madhapur", "Malkajgiri", "Manikonda", 
+                "Mehdipatnam", "Nallakunta", "Narayanguda", "Secunderabad", 
+                "Somajiguda", "Tolichowki", "Uppal"
+            ],
+            "Mumbai": [
+                "Andheri", "Bandra", "Borivali", "Chembur", "Colaba", 
+                "Dadar", "Ghatkopar", "Juhu", "Kandivali", "Kurla", 
+                "Malad", "Powai", "Santacruz", "Thane", "Vile Parle", "Worli"
+            ],
+            "Chennai": [
+                "Adyar", "Ambattur", "Anna Nagar", "Besant Nagar", "Chromepet", 
+                "Egmore", "Guindy", "Kodambakkam", "Madipakkam", "Mylapore", 
+                "Nungambakkam", "Perambur", "Porur", "T. Nagar", "Velachery", "West Mambalam"
+            ]
+        };
+
+        let selectedCity = 'Hyderabad';
+        let selectedSublocation = '';
+        let selectedPrice = 'All Prices';
+        let selectedCuisine = 'All Cuisines';
+        let currentLat = null;
+        let currentLon = null;
+
+        function detectLocation() {
+            const status = document.getElementById('locationStatus');
+            status.textContent = "Detecting your location...";
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        currentLat = position.coords.latitude;
+                        currentLon = position.coords.longitude;
+                        
+                        // Fetch readable address from backend
+                        fetch(`/location?lat=${currentLat}&lon=${currentLon}`)
+                            .then(res => res.json())
+                            .then(data => {
+                                if(data.status === "success") {
+                                    const addr = data.address;
+                                    const displayAddr = addr.suburb || addr.neighbourhood || addr.city_district || addr.town || addr.city;
+                                    status.textContent = `📍 ${displayAddr}, ${addr.city || addr.state}`;
+                                    document.getElementById('selectedLocationLabel').textContent = `${displayAddr}, ${addr.city || addr.state}`;
+                                    selectedSublocation = 'Current Location';
+                                } else {
+                                    status.textContent = "Location detected (Address unavailable)";
+                                }
+                            });
+                    },
+                    (error) => {
+                        status.textContent = "Error: " + error.message;
+                        console.error(error);
+                    }
+                );
+            } else {
+                status.textContent = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        // Auto-detect on load
+        window.onload = () => {
+            detectLocation();
+            selectCity('Hyderabad');
+        };
+
+        function selectCity(city) {
+            selectedCity = city;
+            currentLat = null; // Reset custom lat/lon
+            currentLon = null;
+            document.getElementById('locationStatus').textContent = "";
+            
+            document.querySelectorAll('.city-btn').forEach(btn => {
+                if (btn.id === `btn-${city}`) {
+                    btn.classList.remove('inactive');
+                } else {
+                    btn.classList.add('inactive');
+                }
+            });
+
+            renderSublocations();
+            
+            // Auto-select first sublocation
+            const firstChip = document.querySelector('#sublocationGrid .chip');
+            if (firstChip) firstChip.click();
+        }
+
+        function renderSublocations() {
+            const grid = document.getElementById('sublocationGrid');
+            grid.innerHTML = '';
+            
+            sublocations[selectedCity].forEach(loc => {
+                const chip = document.createElement('div');
+                chip.className = 'chip';
+                chip.textContent = loc;
+                chip.onclick = () => {
+                    document.querySelectorAll('#sublocationGrid .chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    selectedSublocation = loc;
+                    currentLat = null; // Reset GPS if they pick a chip
+                    currentLon = null;
+                    document.getElementById('selectedLocationLabel').textContent = `${selectedSublocation}, ${selectedCity}`;
+                };
+                grid.appendChild(chip);
+            });
+        }
+
+        function selectPrice(price, element) {
+            document.querySelectorAll('#priceGrid .chip').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+            selectedPrice = price;
+        }
+
+        function selectCuisine(cuisine, element) {
+            document.querySelectorAll('#cuisineGrid .chip').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+            selectedCuisine = cuisine;
+        }
+
+        function submitSearch() {
+            const location = selectedSublocation ? (selectedSublocation === 'Current Location' ? 'Current Location' : `${selectedSublocation}, ${selectedCity}`) : selectedCity;
+            const keyword = document.getElementById('nameSearch').value.trim();
+
+            document.getElementById('finalLocation').value = location;
+            document.getElementById('finalCuisine').value = selectedCuisine === 'All Cuisines' ? 'Any' : selectedCuisine;
+            document.getElementById('finalBudget').value = selectedPrice === 'All Prices' ? 'Any' : selectedPrice;
+            document.getElementById('finalKeyword').value = keyword;
+            document.getElementById('finalLat').value = currentLat || "";
+            document.getElementById('finalLon').value = currentLon || "";
+
+            document.getElementById('searchForm').submit();
+        }
+    </script>
+</body>
+</html>

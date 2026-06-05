@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Cuisine - Verify OTP</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: radial-gradient(circle at center, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%), url('/static/images/best_cuisine_bg.png');
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+    }
+    .card {
+        width: 420px;
+        padding: 40px;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        text-align: center;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        z-index: 10;
+    }
+    h1 { color: #f97316; margin-bottom: 5px; }
+    .subtitle { color: #cbd5e1; margin-bottom: 30px; font-size: 14px; }
+    .otp-input-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    .otp-field {
+        width: 50px;
+        height: 60px;
+        font-size: 24px;
+        text-align: center;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.03);
+        color: white;
+        outline: none;
+        transition: 0.3s;
+    }
+    .otp-field:focus {
+        border-color: #f97316;
+        background: rgba(255, 255, 255, 0.07);
+    }
+    button {
+        width: 100%;
+        padding: 14px;
+        margin-top: 30px;
+        background: linear-gradient(135deg, #f97316, #fb923c);
+        border: none;
+        color: white;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+        transition: 0.4s;
+    }
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(249, 115, 22, 0.4);
+    }
+    #msg { margin-top: 15px; font-size: 14px; }
+    .error { color: #ef4444; }
+    .success { color: #10b981; }
+    #timer { color: #f97316; font-weight: bold; margin-top: 10px; font-size: 14px; }
+</style>
+</head>
+<body>
+    <div class="card">
+        <h1>Verify OTP</h1>
+        <div class="subtitle">Enter the 6-digit code sent to your email</div>
+        
+        <div class="otp-input-container">
+            <input type="text" class="otp-field" maxlength="1" onkeyup="moveNext(this, 1)">
+            <input type="text" class="otp-field" maxlength="1" onkeyup="moveNext(this, 2)">
+            <input type="text" class="otp-field" maxlength="1" onkeyup="moveNext(this, 3)">
+            <input type="text" class="otp-field" maxlength="1" onkeyup="moveNext(this, 4)">
+            <input type="text" class="otp-field" maxlength="1" onkeyup="moveNext(this, 5)">
+            <input type="text" class="otp-field" maxlength="1" onkeyup="moveNext(this, 6)">
+        </div>
+
+        <div id="timer">Expiring in 120s</div>
+        
+        <button onclick="handleVerify()">Verify & Continue</button>
+        
+        <div id="msg"></div>
+    </div>
+
+    <script>
+        let timeLeft = 120;
+        const timerElement = document.getElementById('timer');
+        const countdown = setInterval(() => {
+            timeLeft--;
+            timerElement.innerText = `Expiring in ${timeLeft}s`;
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.innerText = 'OTP Expired. Please try again.';
+                timerElement.classList.add('error');
+            }
+        }, 1000);
+
+        function moveNext(field, index) {
+            if (field.value.length >= 1 && index < 6) {
+                document.querySelectorAll('.otp-field')[index].focus();
+            }
+        }
+
+        async function handleVerify() {
+            const fields = document.querySelectorAll('.otp-field');
+            let otp = '';
+            fields.forEach(f => otp += f.value);
+            const msgDiv = document.getElementById('msg');
+
+            if (otp.length < 6) {
+                msgDiv.innerHTML = '<span class="error">Enter complete OTP</span>';
+                return;
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get('type') || 'signup';
+            const endpoint = type === 'signup' ? '/verify_otp' : '/verify_reset_otp';
+
+            try {
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ otp })
+                });
+                const data = await res.json();
+
+                if (data.status === 'success') {
+                    msgDiv.innerHTML = '<span class="success">Verified Successfully!</span>';
+                    setTimeout(() => {
+                        window.location.href = type === 'signup' ? '/profile' : '/reset-password';
+                    }, 1000);
+                } else {
+                    msgDiv.innerHTML = `<span class="error">${data.message}</span>`;
+                }
+            } catch (err) {
+                msgDiv.innerHTML = '<span class="error">Something went wrong.</span>';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Cuisine - Sign Up</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: radial-gradient(circle at center, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%), url('/static/images/best_cuisine_bg.png');
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+    }
+    .card {
+        width: 420px;
+        padding: 40px;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        text-align: center;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        z-index: 10;
+    }
+    h1 { color: #f97316; margin-bottom: 5px; }
+    .subtitle { color: #cbd5e1; margin-bottom: 30px; font-size: 14px; }
+    input {
+        width: 100%;
+        padding: 12px;
+        margin-top: 15px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.03);
+        color: white;
+        outline: none;
+        transition: 0.3s;
+    }
+    input:focus {
+        border-color: #f97316;
+        background: rgba(255, 255, 255, 0.07);
+    }
+    button {
+        width: 100%;
+        padding: 14px;
+        margin-top: 25px;
+        background: linear-gradient(135deg, #f97316, #fb923c);
+        border: none;
+        color: white;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+        transition: 0.4s;
+    }
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(249, 115, 22, 0.4);
+    }
+    .footer-links {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #94a3b8;
+    }
+    .footer-links a {
+        color: #f97316;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    #msg { margin-top: 15px; font-size: 14px; }
+    .error { color: #ef4444; }
+    .success { color: #10b981; }
+</style>
+</head>
+<body>
+    <div class="card">
+        <h1>Smart Cuisine</h1>
+        <div class="subtitle">Join our foodie community</div>
+        
+        <input type="text" id="name" placeholder="Full Name">
+        <input type="email" id="email" placeholder="Email Address">
+        <input type="password" id="password" placeholder="Create Password">
+        
+        <button onclick="handleSignup()">Create Account</button>
+        
+        <div id="msg"></div>
+        
+        <div class="footer-links">
+            Already have an account? <a href="/">Login</a>
+        </div>
+    </div>
+
+    <script>
+        async function handleSignup() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const msgDiv = document.getElementById('msg');
+
+            if (!name || !email || !password) {
+                msgDiv.innerHTML = '<span class="error">All fields are required</span>';
+                return;
+            }
+
+            try {
+                const res = await fetch('/get_otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await res.json();
+
+                if (data.status === 'sent') {
+                    window.location.href = '/verify-otp?type=signup';
+                } else {
+                    msgDiv.innerHTML = `<span class="error">${data.message}</span>`;
+                }
+            } catch (err) {
+                msgDiv.innerHTML = '<span class="error">Something went wrong. Try again.</span>';
+            }
+        }
+    </script>
+</body>
+</html>
