@@ -39,7 +39,7 @@ def home():
 def search():
     return render_template("dashboard.html")
 
-from database import db # Import MongoDB instance
+from ..database import db # Import MongoDB instance
 
 @main_bp.route("/profile")
 def profile():
