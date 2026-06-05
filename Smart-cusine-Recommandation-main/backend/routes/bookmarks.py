@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, session
-from database import db
+from ..database import db
 
 bookmark_bp = Blueprint('bookmarks', __name__)
 
