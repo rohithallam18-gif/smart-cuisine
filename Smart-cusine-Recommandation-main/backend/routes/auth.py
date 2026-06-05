@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, session
-from database import users_collection
+from .database import users_collection
 from services.email_service import generate_otp, send_email_otp
 from werkzeug.security import generate_password_hash, check_password_hash
 import time
