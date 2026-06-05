@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from database import db
+from ..database import db
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
