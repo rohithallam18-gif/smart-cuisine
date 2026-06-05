@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, jsonify, session, redirect
 import sqlite3
 import random
-from ml_models import is_fake_review, get_clean_rating, recommend_restaurants
-from services.google_service import get_nearby_restaurants
+from ..ml_models import is_fake_review, get_clean_rating, recommend_restaurants
+from ..services.google_service import get_nearby_restaurants
 
 main_bp = Blueprint('main', __name__)
 
