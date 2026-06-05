@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, render_template
 from services.google_service import get_nearby_restaurants, get_place_details
-from database import db
+from ..database import db
 
 restaurant_bp = Blueprint('restaurants', __name__)
 
